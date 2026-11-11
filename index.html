@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرحبا بك يا عمر - Gym Edition</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Cairo Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary-glow: #ff2a2a;
+            --secondary-glow: #ff6b00;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #08080c;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Canvas background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Glassmorphic Card */
+        .glass-card {
+            background: rgba(18, 18, 26, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Neon Glow Effects */
+        .neon-glow-red {
+            box-shadow: 0 0 30px rgba(255, 42, 42, 0.4);
+        }
+
+        .neon-text-glow {
+            text-shadow: 0 0 15px rgba(255, 42, 42, 0.6), 0 0 30px rgba(255, 107, 0, 0.4);
+        }
+
+        .neon-border {
+            position: relative;
+        }
+
+        .neon-border::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow), var(--primary-glow));
+            border-radius: 1.5rem;
+            z-index: -1;
+            opacity: 0.7;
+            filter: blur(8px);
+            transition: opacity 0.3s ease;
+        }
+
+        /* Ambient Orbs Animation */
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        @keyframes float-reverse {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(30px) scale(0.95); }
+        }
+
+        .animate-orb-1 {
+            animation: float-slow 10s ease-in-out infinite;
+        }
+
+        .animate-orb-2 {
+            animation: float-reverse 12s ease-in-out infinite;
+        }
+
+        /* Button Pulse */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 42, 42, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(255, 42, 42, 0.8); }
+        }
+
+        .btn-pulse {
+            animation: pulse-glow 2s infinite;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4 relative min-h-screen">
+
+    <!-- Interactive Particle Background Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Glowing Background Ambient Orbs -->
+    <div class="fixed top-1/4 right-10 w-96 h-96 bg-red-600/20 rounded-full blur-[120px] pointer-events-none animate-orb-1"></div>
+    <div class="fixed bottom-1/4 left-10 w-96 h-96 bg-orange-600/20 rounded-full blur-[120px] pointer-events-none animate-orb-2"></div>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 w-full max-w-lg my-8">
+        <div class="glass-card neon-border rounded-3xl p-6 sm:p-8 text-center relative overflow-hidden">
+            
+            <!-- Header Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs sm:text-sm font-semibold mb-6">
+                <i data-lucide="dumbbell" class="w-4 h-4"></i>
+                <span>GYM & FITNESS MOTIVATION</span>
+            </div>
+
+            <!-- Profile Image -->
+            <div class="relative w-36 h-36 sm:w-44 sm:h-44 mx-auto mb-6">
+                <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-red-600 to-orange-500 blur-md opacity-75"></div>
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=600" 
+                     alt="Gym Male" 
+                     class="relative w-full h-full object-cover rounded-full border-2 border-red-500/50 shadow-2xl">
+            </div>
+
+            <!-- Main Heading -->
+            <h1 class="text-3xl sm:text-5xl font-black mb-3 neon-text-glow tracking-tight text-white">
+                مرحبا بك يا عمر ⚡
+            </h1>
+
+            <p class="text-gray-300 text-sm sm:text-base mb-8 leading-relaxed font-medium">
+                جاهز لكسر أرقامك القياسية اليوم؟ استمر في التحدي ووظّف طاقتك للوصول للقمة! 
+            </p>
+
+            <!-- Stats Showcase -->
+            <div class="grid grid-cols-3 gap-3 mb-8 bg-black/40 p-4 rounded-2xl border border-white/5">
+                <div class="text-center">
+                    <i data-lucide="flame" class="w-5 h-5 text-red-500 mx-auto mb-1"></i>
+                    <span class="block font-bold text-lg text-white">100%</span>
+                    <span class="text-[11px] text-gray-400">طاقة وحماس</span>
+                </div>
+                <div class="text-center border-x border-white/10">
+                    <i data-lucide="trophy" class="w-5 h-5 text-orange-400 mx-auto mb-1"></i>
+                    <span class="block font-bold text-lg text-white">الهدف</span>
+                    <span class="text-[11px] text-gray-400">القمة دائماً</span>
+                </div>
+                <div class="text-center">
+                    <i data-lucide="zap" class="w-5 h-5 text-yellow-400 mx-auto mb-1"></i>
+                    <span class="block font-bold text-lg text-white">التمرين</span>
+                    <span class="text-[11px] text-gray-400">لا استسلام</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-3">
+                <button onclick="openWorkoutModal()" class="btn-pulse w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 font-bold text-white transition duration-300 flex items-center justify-center gap-2 text-base">
+                    <i data-lucide="activity" class="w-5 h-5"></i>
+                    <span>ابدأ التحدي الآن</span>
+                </button>
+
+                <div class="flex gap-3">
+                    <button onclick="copyMessage()" class="flex-1 py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 font-semibold text-sm transition duration-200 flex items-center justify-center gap-2">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                        <span>نسخ الترحيب</span>
+                    </button>
+                    <button onclick="toggleTheme()" class="flex-1 py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 font-semibold text-sm transition duration-200 flex items-center justify-center gap-2">
+                        <i data-lucide="palette" class="w-4 h-4"></i>
+                        <span>تغيير الإضاءة</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Workout Challenge Modal (قائمة التمارين اليومية) -->
+    <div id="workout-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden transition-all duration-300">
+        <div class="glass-card border border-red-500/30 rounded-3xl p-6 w-full max-w-lg relative max-h-[90vh] overflow-y-auto">
+            
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 rounded-xl bg-red-500/20 text-red-500">
+                        <i data-lucide="dumbbell" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">تمارينك اليومية يا عمر 🎯</h2>
+                        <p class="text-xs text-gray-400">نفذ التمارين التالية بالترتيب للحصول على أفضل نتيجة</p>
+                    </div>
+                </div>
+                <button onclick="closeWorkoutModal()" class="text-gray-400 hover:text-white p-2 rounded-lg bg-white/5">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Exercises List -->
+            <div class="space-y-4 text-right">
+
+                <!-- Exercise 1: Push-ups -->
+                <div class="bg-black/40 p-4 rounded-2xl border border-white/5 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-400 font-bold">1</div>
+                        <div>
+                            <h3 class="font-bold text-white text-base">تمرين الضغط (Push-ups)</h3>
+                            <p class="text-xs text-gray-400">لتقوية الصدر والكتف والترايسبس</p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold">3 مجموعات × 15</span>
+                </div>
+
+                <!-- Exercise 2: Squats -->
+                <div class="bg-black/40 p-4 rounded-2xl border border-white/5 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-orange-600/20 border border-orange-500/30 flex items-center justify-center text-orange-400 font-bold">2</div>
+                        <div>
+                            <h3 class="font-bold text-white text-base">السكوات (Squats)</h3>
+                            <p class="text-xs text-gray-400">لتقوية الأرجل والعضلات السفلية</p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold">4 مجموعات × 20</span>
+                </div>
+
+                <!-- Exercise 3: Pull-ups -->
+                <div class="bg-black/40 p-4 rounded-2xl border border-white/5 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-yellow-600/20 border border-yellow-500/30 flex items-center justify-center text-yellow-400 font-bold">3</div>
+                        <div>
+                            <h3 class="font-bold text-white text-base">تمرين العقلة (Pull-ups)</h3>
+                            <p class="text-xs text-gray-400">لتقوية الظهر وعضلات البايسبس</p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold">3 مجموعات × 8-10</span>
+                </div>
+
+                <!-- Exercise 4: Crunches -->
+                <div class="bg-black/40 p-4 rounded-2xl border border-white/5 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold">4</div>
+                        <div>
+                            <h3 class="font-bold text-white text-base">تمرين بطن (Crunches)</h3>
+                            <p class="text-xs text-gray-400">شد عضلات البطن وتقوية الكور</p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold">3 مجموعات × 20</span>
+                </div>
+
+                <!-- Exercise 5: Plank -->
+                <div class="bg-black/40 p-4 rounded-2xl border border-white/5 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-600/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">5</div>
+                        <div>
+                            <h3 class="font-bold text-white text-base">تمرين الثبات (Plank)</h3>
+                            <p class="text-xs text-gray-400">لزيادة قوة التحمل واللياقة</p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-400 text-xs font-bold">3 مجموعات × 60 ثانية</span>
+                </div>
+
+            </div>
+
+            <!-- Done Button -->
+            <button onclick="finishWorkout()" class="w-full mt-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-orange-600 font-bold text-white shadow-lg flex items-center justify-center gap-2">
+                <i data-lucide="check" class="w-5 h-5"></i>
+                <span>تم إكمال التمرين 💪</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-red-600 text-white px-6 py-2.5 rounded-full shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none z-50 text-sm font-semibold flex items-center gap-2">
+        <i data-lucide="check-circle" class="w-4 h-4"></i>
+        <span id="toast-text">تم النسخ بنجاح!</span>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Background Canvas Particles Script
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        let particles = [];
+        const particleCount = 60;
+        let particleColor = '#ff2a2a';
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 1.5;
+                this.speedY = (Math.random() - 0.5) * 1.5;
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = particleColor;
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) {
+                        ctx.strokeStyle = particleColor;
+                        ctx.globalAlpha = (1 - distance / 120) * 0.25;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Modal Functions
+        function openWorkoutModal() {
+            document.getElementById('workout-modal').classList.remove('hidden');
+        }
+
+        function closeWorkoutModal() {
+            document.getElementById('workout-modal').classList.add('hidden');
+        }
+
+        function finishWorkout() {
+            closeWorkoutModal();
+            showToast("عاش يا عمر! كمل يا بطل ⚡");
+        }
+
+        // Copy Message
+        function copyMessage() {
+            navigator.clipboard.writeText("مرحبا بك يا عمر");
+            showToast("تم نسخ: مرحبا بك يا عمر");
+        }
+
+        // Show Toast Notification
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').innerText = text;
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2500);
+        }
+
+        // Toggle Color Themes
+        const colors = ['#ff2a2a', '#00e5ff', '#ffb700'];
+        let colorIdx = 0;
+        function toggleTheme() {
+            colorIdx = (colorIdx + 1) % colors.length;
+            particleColor = colors[colorIdx];
+            document.documentElement.style.setProperty('--primary-glow', particleColor);
+            showToast("تم تغيير لون الإضاءة 🎨");
+        }
+    </script>
+</body>
+  </html>
+    
